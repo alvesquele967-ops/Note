@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="printer"
+          class="chiku.liu.printer.ConsolePrinter">
+
+        <property name="prefix" value="[Spring]"/>
+    </bean>
+
+<!--    <bean id="greetingService"-->
+<!--          class="chiku.liu.service.GreetingService">-->
+<!--        <property name="printer" ref="printer"/>-->
+<!--    </bean>-->
+
+    <bean id="greetingService"
+          class="chiku.liu.service.GreetingService"
+          scope="prototype" >
+        <constructor-arg ref="printer"/>
+    </bean>
+<!--    构造器注入-->
+</beans>
+
