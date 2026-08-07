@@ -151,3 +151,17 @@ COMMIT ;
 # 持久性：事务一旦提交成功，修改应当被永久保存，即使服务器重启，已提交的数据也不应当会消失
 # 之后执行重要的UPDATE和DELETE操作时，应当按照下面的流程
 # 先查询->开启事务->执行修改->检查结果->决定提交或者撤销
+# 查询在线设备数：这里是先筛选再统计，也就是先WHERE
+SELECT COUNT(*) FROM device WHERE status = 'ONLINE';
+SELECT * FROM device;
+# 比较适合数字数据的有SUM和AVG，我这个表暂时还没那种列就只做代码演示了，这个求IP和求平均的实际没有什么用
+# 算平均
+SELECT AVG(device.ip_address) FROM device;
+# 找最大
+SELECT MAX(device.created_at) FROM device;
+# 找最小
+SELECT MIN(device.created_at) FROM device;
+# 求总和
+SELECT SUM(device.ip_address) FROM device;
+# 分别计数，这里不加AS命名的话，默认名字就是COUNT(*)，后面的HAVING就是筛选分组后的结果，不能用WHERE因为他执行时还没有完成分组统计
+SELECT device.status,COUNT(*) AS device_count FROM device GROUP BY status HAVING COUNT(*) >= 2;
