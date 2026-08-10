@@ -56,7 +56,7 @@ ssh-keygen -t ed25519 -C "你的绑定邮箱"
 # 2. 读取并复制公钥
 cat ~/.ssh/id_ed25519.pub
 # 3. GitHub网页粘贴公钥：Settings → SSH and GPG keys
-# 4. 测试连通
+# 4. 测试连
 ssh -T git@github.com
 ```
 ---

@@ -163,5 +163,81 @@ SELECT MAX(device.created_at) FROM device;
 SELECT MIN(device.created_at) FROM device;
 # 求总和
 SELECT SUM(device.ip_address) FROM device;
-# 分别计数，这里不加AS命名的话，默认名字就是COUNT(*)，后面的HAVING就是筛选分组后的结果，不能用WHERE因为他执行时还没有完成分组统计
-SELECT device.status,COUNT(*) AS device_count FROM device GROUP BY status HAVING COUNT(*) >= 2;
+# 分别计数，这里不加AS命名的话，默认名字就是COUNT(*)，后面的HAVING就是筛选分组后的结果，不能用WHERE因为他执行时还没有完成分组统计，最后还可以排个序
+SELECT device.status,COUNT(*) AS device_count FROM device GROUP BY status HAVING COUNT(*) >= 1 ORDER BY device_count DESC ;
+# 两边都打百分号就会查询所有带交换字符串的数据，如果只开一边的话比如说%交换，就会查询~交换这样的数据，比如说左边这个例子里，"交换机"，不行，"我要交换"，可以
+SELECT * FROM device WHERE device_name LIKE '%交换%';
+# 匹配内容之多一个字符的情况下使用_，此时就只会查询到“交换机”，“交换机A”这种就不会被查询到
+SELECT * FROM device WHERE device_name LIKE '交换_';
+# 查找不含“交换”的数据
+SELECT * FROM device WHERE device_name NOT LIKE '%交换%';
+# NULL判定的时候不能使用WHERE ~ = NULL，而是使用IS NULL，同理IS NOT NULL也能使用
+SELECT * FROM device WHERE ip_address IS NULL;
+# 去重查询，不使用DISTINCT的情况下会输出所有相同的数据例如会输出一堆ONLINE，但使用DISTINCT就只会输出一个ONLINE
+SELECT DISTINCT device.status FROM device;
+# 普通的LENGTH一个汉字3字节，一个字母或者数字1字节
+SELECT LENGTH(device.device_name) FROM device;
+SELECT CHAR_LENGTH(device.device_name) FROM device;
+# 去除两边空格，我的数据懒得去插入新的做演示了，就用这个举例了
+SELECT TRIM(' hello ');
+# 截取字符串，三个参数分别是字符串，开始位置，长度
+SELECT SUBSTRING(device.ip_address,1,3) FROM device WHERE id = 1;
+# 获取当前时间，和去日期，后者会输出年月日不会输出时分秒
+SELECT NOW();
+SELECT DATE(NOW());
+# 第一个输出0的原因是DATEDIFF对比的是天，在同一天创建的当然是0，如果是要看时分秒之类的就用第二个，第一个参数变成单位，后面两个参数才是比对的对象
+SELECT DATEDIFF ((SELECT device.created_at FROM device WHERE id = 1),(SELECT device.created_at FROM device WHERE id = 7))AS diff_day;
+SELECT TIMESTAMPDIFF(SECOND ,(SELECT device.created_at FROM device WHERE id = 1),(SELECT device.created_at FROM device WHERE id = 7))AS diff_time;
+# 同样可以格式化日期，不要忘了大小写规范
+SELECT DATE_FORMAT(NOW(),'%Y年%m月%d日');
+# MySQL的三元表达式，可以替换内容
+SELECT IF(device.status = 'ONLINE','在线','离线') FROM device;
+# 更强，类似于if.elseif.else
+SELECT CASE
+    WHEN device.status = 'ONLINE'
+    THEN '在线'
+
+    WHEN device.status = 'OFFLINE'
+    THEN '离线'
+
+    ELSE '未知'
+END AS status_text
+FROM device;
+
+CREATE TABLE IF NOT EXISTS product (
+                                       id INT PRIMARY KEY AUTO_INCREMENT COMMENT '主键',
+                                       name VARCHAR(32) NOT NULL COMMENT '商品名称',
+                                       price DECIMAL(8,2) NOT NULL COMMENT '商品单价',
+                                       category VARCHAR(20) COMMENT '分类'
+);
+CREATE TABLE IF NOT EXISTS device1 (
+                                      id INT PRIMARY KEY AUTO_INCREMENT COMMENT '主键',
+                                      device_name VARCHAR(32) NOT NULL COMMENT '设备名称',
+                                      price DECIMAL(8,2) NOT NULL COMMENT '设备单价',
+                                      brand VARCHAR(20) COMMENT '品牌'
+);
+-- 给product插入数据
+INSERT INTO product(name,price,category)
+VALUES
+    ('鼠标', 69.00, '外设'),
+    ('键盘', 129.00, '外设'),
+    ('耳机', 199.00, '音频'),
+    ('U盘', 45.00, '存储'),
+    ('散热器', 79.00, '配件');
+
+-- 给device插入数据
+INSERT INTO device1(device_name,price,brand)
+VALUES
+    ('笔记本电脑', 4999.00, '联想'),
+    ('平板电脑', 2199.00, '华为'),
+    ('充电宝', 89.00, '小米'),
+    ('路由器', 159.00, 'TP-Link'),
+    ('智能手环', 125.00, '小米'),
+    ('数据线', 29.00, '绿联');
+
+DESC device1;
+DESC product;
+# 子查询
+SELECT * FROM device1 WHERE price >
+                           (SELECT AVG(price)
+                            FROM product);
