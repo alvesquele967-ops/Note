@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="chiku.liu.mapper.NetworkDeviceMapper">
+
+<!--    调用selectAll()时，该执行这里的SQL-->
+    <select id="selectAll"
+            resultType="chiku.liu.entity.NetworkDevice">
+
+        SELECT
+            id,
+            device_name AS deviceName,
+            ip_address AS ipAddress,
+            status,
+            room_id AS roomId
+        FROM network_device
+    </select>
+
+</mapper>

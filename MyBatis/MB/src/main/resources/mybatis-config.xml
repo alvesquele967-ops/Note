@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+<!--运行环境-->
+    <environments default="development">
+<!--        定义一个叫development的环境，代表这是当前开发时使用的数据库配置-->
+        <environment id="development">
+<!--            表示MB使用JDBC来管理事务-->
+            <transactionManager type="JDBC"/>
+<!--            数据源，POOLED表示连接池-->
+            <dataSource type="POOLED">
+<!--                告诉MB使用MySQL JDBC驱动-->
+                <property
+                        name="driver"
+                        value="com.mysql.cj.jdbc.Driver"/>
+                <!-- 使用MySQL JDBC，MySQL在本机，默认端口3306，之前创建的数据库-->
+                <property
+                        name="url"
+                        value="jdbc:mysql://localhost:3306/machine"/>
+
+                <property
+                        name="username"
+                        value="root"/>
+
+                <property
+                        name="password"
+                        value="661960"/>
+            </dataSource>
+        </environment>
+    </environments>
+<!--    映射器登录，告诉MB，我有一个写SQL的Mapper文件，启动的时候把他加载进来-->
+    <mappers>
+        <mapper resource="mapper/NetworkDeviceMapper.xml"/>
+    </mappers>
+    
+</configuration>

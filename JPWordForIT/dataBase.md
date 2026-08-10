@@ -7,5 +7,8 @@
 **外部キー**（がいぶ）：外键|Foreign key  
 **主キー**（しゅ）：主键|Primary key  
 **サブクエリ**：子查询|Subquery  
-**スカラーサブクエリ**：标量子查询|Scalar Subquery
+**スカラーサブクエリ**：标量子查询|Scalar Subquery  
+**マッパー**：映射器|Mapper  
+**コネクションプール**：连接池|Connection Pool  
+
 
