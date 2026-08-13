@@ -1,0 +1,15 @@
+#???springboot??????????
+server:
+  servlet:
+    context-path: /api
+  port: 8080
+
+#spring:
+#  datasource:
+##    协议://数据库地址:端口/数据库名称?参数1=值&参数2=值&参数3=值
+##    mysql -uroot -p
+##    show variables like 'port';查看端口
+#    url:  jdbc:mysql://127.0.0.1:3306/user?characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+#    username: root
+#    password: root
+#    driver-class-name: com.mysql.cj.jdbc.Driver
