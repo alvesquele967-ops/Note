@@ -18,16 +18,5 @@
             room_id AS roomId
         FROM network_device
     </select>
-    <select id="selectById"
-            resultType="chiku.liu.entity.NetworkDevice">
-        SELECT
-        id,
-        device_name AS deviceName,
-        ip_address AS ipAddress,
-        status,
-        room_id AS roomId
-        FROM network_device WHERE id = #{id};
-    </select>
-
 
 </mapper>

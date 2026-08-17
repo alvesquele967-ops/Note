@@ -27,6 +27,7 @@ public class Main {
         for (NetworkDevice device : devices) {
             System.out.println(device);
         }
+        System.out.println(mapper.selectById(7));
         sqlSession.close();
     }
 }
