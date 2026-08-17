@@ -9,4 +9,5 @@ public interface NetworkDeviceMapper {
     List<NetworkDevice> selectAll();
 
     NetworkDevice selectById(Integer id);
+
 }

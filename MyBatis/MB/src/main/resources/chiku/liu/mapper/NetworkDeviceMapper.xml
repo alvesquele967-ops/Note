@@ -29,5 +29,4 @@
         FROM network_device WHERE id = #{id};
     </select>
 
-
 </mapper>
