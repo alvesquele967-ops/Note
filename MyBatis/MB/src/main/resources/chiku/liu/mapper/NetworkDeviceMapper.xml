@@ -5,7 +5,12 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="chiku.liu.mapper.NetworkDeviceMapper">
-
+<resultMap id="NetworkDeviceMap" type="NetworkDevice">
+    <id column="id" property="id"/>
+    <result column="device_name" property="deviceName"/>
+    <result column="ip_address" property="ipAddress"/>
+    <result column="room_id" property="roomId"/>
+</resultMap>
 <!--    调用selectAll()时，该执行这里的SQL-->
     <select id="selectAll"
             resultType="NetworkDevice">
@@ -18,15 +23,24 @@
             room_id AS roomId
         FROM network_device
     </select>
+<!--resultMap，类似于上方AS作用-->
     <select id="selectById"
-            resultType="NetworkDevice">
+            resultMap="NetworkDeviceMap">
         SELECT
-        id,
-        device_name AS deviceName,
-        ip_address AS ipAddress,
-        status,
-        room_id AS roomId
+        *
         FROM network_device WHERE id = #{id};
+    </select>
+
+<!--    模糊查找，另外可以去看TestMain里给的参数-->
+    <select id="selectByName" resultMap="NetworkDeviceMap">
+<!--预编辑占用符，防SQL注入-->
+<!--        select * from network_device where device_name like #{deviceName};-->
+<!--        直接字符串拼接，存在注入漏洞-->
+<!--        select * from network_device where device_name like '%${deviceName}%';-->
+<!--        标准写法，concat拼接，#{}预编译占位符，防止SQL注入。日志打印：concat('%',?,'%');-->
+        select * from network_device where device_name like concat('%',#{deviceName},'%');
+<!--        预编译把“SQL命令结构”和“用户传入的数据”彻底分开。-->
+<!--        数据库不会把传入的参数当成 SQL 代码执行，仅仅当成普通文本字符串。-->
     </select>
 
 </mapper>

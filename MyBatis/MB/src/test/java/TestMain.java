@@ -47,4 +47,13 @@ public class TestMain {
         NetworkDevice device = mapper.selectById(7);
         System.out.println("查询id=7: " + device);
     }
+
+    @Test
+    public void testSelectByName() {
+//        List<NetworkDevice> devices = mapper.selectByName("%核心%");
+        List<NetworkDevice> devices = mapper.selectByName("核心");
+        for (NetworkDevice device : devices) {
+            System.out.println(device);
+        }
+    }
 }

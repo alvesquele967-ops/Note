@@ -10,4 +10,6 @@ public interface NetworkDeviceMapper {
 
     NetworkDevice selectById(Integer id);
 
+    List<NetworkDevice> selectByName(String name);
+
 }
