@@ -5,8 +5,15 @@
         "https://mybatis.org/dtd/mybatis-3-config.dtd">
 
 <configuration>
-    <properties resource="jdbcConfig.properties">
-    </properties>
+<!--属性-->
+    <properties resource="jdbcConfig.properties"/>
+<!--    设置别名-->
+    <typeAliases>
+<!--        <typeAlias type="chiku.liu.entity.NetworkDevice" alias="Device"/>-->
+<!--        也可以直接使用包，后面要用就直接用包下的类名就行了-->
+        <package name="chiku.liu.entity"/>
+    </typeAliases>
+
 <!--运行环境-->
     <environments default="development">
 <!--        定义一个叫development的环境，代表这是当前开发时使用的数据库配置-->
@@ -33,10 +40,28 @@
                         value="${jdbc.password}"/>
             </dataSource>
         </environment>
+        <environment id="test">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property
+                        name="driver"
+                        value="${jdbc.drive}"/>
+                <property
+                        name="url"
+                        value="${jdbc.url}"/>
+                <property
+                        name="username"
+                        value="${jdbc.username}"/>
+                <property
+                        name="password"
+                        value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
     </environments>
 <!--    映射器登录，告诉MB，我有一个写SQL的Mapper文件，启动的时候把他加载进来-->
     <mappers>
-        <mapper resource="mapper/NetworkDeviceMapper.xml"/>
+<!--        <mapper resource="mapper/NetworkDeviceMapper.xml"/>-->
+    <package name="chiku.liu.mapper"/>
     </mappers>
     
 </configuration>

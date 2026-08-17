@@ -8,7 +8,7 @@
 
 <!--    调用selectAll()时，该执行这里的SQL-->
     <select id="selectAll"
-            resultType="chiku.liu.entity.NetworkDevice">
+            resultType="NetworkDevice">
 
         SELECT
             id,
@@ -19,7 +19,7 @@
         FROM network_device
     </select>
     <select id="selectById"
-            resultType="chiku.liu.entity.NetworkDevice">
+            resultType="NetworkDevice">
         SELECT
         id,
         device_name AS deviceName,
