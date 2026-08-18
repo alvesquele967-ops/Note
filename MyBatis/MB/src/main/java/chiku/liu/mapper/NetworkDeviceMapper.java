@@ -23,4 +23,13 @@ public interface NetworkDeviceMapper {
     List<NetworkDevice> selectByStatusAndName(Map map);
     List<NetworkDevice> selectBySomeOfAll(Map map);
 
+//    可以改返回值，返回行数
+    int insert(NetworkDevice networkDevice);
+
+    int insertSome(@Param("networkDevices") List<NetworkDevice> networkDevice);
+
+    void update(NetworkDevice networkDevice);
+
+    int deleteById(Integer[] id);
+
 }

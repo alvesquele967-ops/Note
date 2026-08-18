@@ -11,6 +11,37 @@
         <result column="ip_address" property="ipAddress"/>
         <result column="room_id" property="roomId"/>
     </resultMap>
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into network_device (device_name, ip_address, status, room_id)
+        values (#{deviceName},#{ipAddress},#{status},#{roomId});
+    </insert>
+    <insert id="insertSome">
+        insert into network_device (device_name, ip_address, status, room_id)
+        values <foreach collection="networkDevices" item="networkDevice" separator=",">
+        (#{networkDevice.deviceName},#{networkDevice.ipAddress},#{networkDevice.status},#{networkDevice.roomId})
+    </foreach>
+    </insert>
+    <update id="update">
+        update network_device
+        <!--set标签可以自动去逗号-->
+        <set>
+            <if test="status != '' and status != null">
+                status = #{status},
+            </if>
+            <if test="roomId != null">
+                room_id = #{roomId},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <delete id="deleteById">
+        delete
+        from network_device
+        where id in
+        <foreach collection="array" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
     <!--    调用selectAll()时，该执行这里的SQL-->
     <select id="selectAll"
             resultType="NetworkDevice">
@@ -59,7 +90,7 @@
         from network_device
         <where>
             <!--            简单来说就是：先进行 if 判断，如果条件不成立，那么就不执行 where 中 if 的那一段 and，当所有的 if 都不满足时，就不会执行所有的 and-->
-            <!--            以下两种方式等价于!= ' '-->
+            <!--            以下两种方式等价于!= ''-->
             <!--suppress XmlUnresolvedReference -->
             <if test="!deviceName.length.equals(' ') and deviceName != null">
                 and device_name like concat('%', #{deviceName}, '%')
