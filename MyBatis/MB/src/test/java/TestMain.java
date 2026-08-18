@@ -10,7 +10,9 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TestMain {
     private SqlSession sqlSession;
@@ -54,6 +56,36 @@ public class TestMain {
         List<NetworkDevice> devices = mapper.selectByName("核心");
         for (NetworkDevice device : devices) {
             System.out.println(device);
+        }
+    }
+
+    @Test
+    public void testSelectRoomIdAndName() {
+        List<NetworkDevice> devices = mapper.selectByRoomIdAndName("1","核心");
+        for (NetworkDevice device : devices) {
+            System.out.println(device);
+        }
+    }
+
+    @Test
+    public void testSelectByDevice() {
+        NetworkDevice device = new NetworkDevice();
+        device.setDeviceName("核心");
+        device.setRoomId(1L);
+        List<NetworkDevice> devices = mapper.selectByDevice(device);
+        for (NetworkDevice device1 : devices) {
+            System.out.println(device1);
+        }
+    }
+
+    @Test
+    public void testSelectByStatusAndName() {
+        Map<String,Object> device = new HashMap<>();
+        device.put("deviceName","核心");
+        device.put("status","ONLINE");
+        List<NetworkDevice> devices = mapper.selectByStatusAndName(device);
+        for (NetworkDevice device1 : devices) {
+            System.out.println(device1);
         }
     }
 }

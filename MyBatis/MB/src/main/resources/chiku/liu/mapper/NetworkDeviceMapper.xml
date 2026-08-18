@@ -33,7 +33,7 @@
 
 <!--    模糊查找，另外可以去看TestMain里给的参数-->
     <select id="selectByName" resultMap="NetworkDeviceMap">
-<!--预编辑占用符，防SQL注入-->
+<!--预编译占用符，防SQL注入-->
 <!--        select * from network_device where device_name like #{deviceName};-->
 <!--        直接字符串拼接，存在注入漏洞-->
 <!--        select * from network_device where device_name like '%${deviceName}%';-->
@@ -41,6 +41,16 @@
         select * from network_device where device_name like concat('%',#{deviceName},'%');
 <!--        预编译把“SQL命令结构”和“用户传入的数据”彻底分开。-->
 <!--        数据库不会把传入的参数当成 SQL 代码执行，仅仅当成普通文本字符串。-->
+    </select>
+    <select id="selectByRoomIdAndName" resultMap="NetworkDeviceMap">
+        select * from network_device where device_name like concat('%',#{deviceName},'%') and  room_id = #{roomId};
+    </select>
+
+    <select id="selectByDevice" resultMap="NetworkDeviceMap">
+        select * from network_device where device_name like concat('%',#{deviceName},'%') and  room_id = #{roomId};
+    </select>
+    <select id="selectByStatusAndName" resultMap="NetworkDeviceMap">
+        select * from network_device where device_name like concat('%',#{deviceName},'%') and  status = #{status};
     </select>
 
 </mapper>
