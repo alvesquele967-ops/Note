@@ -5,52 +5,112 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="chiku.liu.mapper.NetworkDeviceMapper">
-<resultMap id="NetworkDeviceMap" type="NetworkDevice">
-    <id column="id" property="id"/>
-    <result column="device_name" property="deviceName"/>
-    <result column="ip_address" property="ipAddress"/>
-    <result column="room_id" property="roomId"/>
-</resultMap>
-<!--    调用selectAll()时，该执行这里的SQL-->
+    <resultMap id="NetworkDeviceMap" type="NetworkDevice">
+        <id column="id" property="id"/>
+        <result column="device_name" property="deviceName"/>
+        <result column="ip_address" property="ipAddress"/>
+        <result column="room_id" property="roomId"/>
+    </resultMap>
+    <!--    调用selectAll()时，该执行这里的SQL-->
     <select id="selectAll"
             resultType="NetworkDevice">
 
-        SELECT
-            id,
-            device_name AS deviceName,
-            ip_address AS ipAddress,
-            status,
-            room_id AS roomId
+        SELECT id,
+               device_name AS deviceName,
+               ip_address  AS ipAddress,
+               status,
+               room_id     AS roomId
         FROM network_device
     </select>
-<!--resultMap，类似于上方AS作用-->
+    <!--resultMap，类似于上方AS作用-->
     <select id="selectById"
             resultMap="NetworkDeviceMap">
-        SELECT
-        *
-        FROM network_device WHERE id = #{id};
+        SELECT *
+        FROM network_device
+        WHERE id = #{id};
     </select>
 
-<!--    模糊查找，另外可以去看TestMain里给的参数-->
+    <!--    模糊查找，另外可以去看TestMain里给的参数-->
     <select id="selectByName" resultMap="NetworkDeviceMap">
-<!--预编译占用符，防SQL注入-->
-<!--        select * from network_device where device_name like #{deviceName};-->
-<!--        直接字符串拼接，存在注入漏洞-->
-<!--        select * from network_device where device_name like '%${deviceName}%';-->
-<!--        标准写法，concat拼接，#{}预编译占位符，防止SQL注入。日志打印：concat('%',?,'%');-->
+        <!--预编译占用符，防SQL注入-->
+        <!--        select * from network_device where device_name like #{deviceName};-->
+        <!--        直接字符串拼接，存在注入漏洞-->
+        <!--        select * from network_device where device_name like '%${deviceName}%';-->
+        <!--        标准写法，concat拼接，#{}预编译占位符，防止SQL注入。日志打印：concat('%',?,'%');-->
         select * from network_device where device_name like concat('%',#{deviceName},'%');
-<!--        预编译把“SQL命令结构”和“用户传入的数据”彻底分开。-->
-<!--        数据库不会把传入的参数当成 SQL 代码执行，仅仅当成普通文本字符串。-->
+        <!--        预编译把“SQL命令结构”和“用户传入的数据”彻底分开。-->
+        <!--        数据库不会把传入的参数当成 SQL 代码执行，仅仅当成普通文本字符串。-->
     </select>
     <select id="selectByRoomIdAndName" resultMap="NetworkDeviceMap">
-        select * from network_device where device_name like concat('%',#{deviceName},'%') and  room_id = #{roomId};
+        select *
+        from network_device
+        where device_name like concat('%', #{deviceName}, '%')
+          and room_id = #{roomId};
     </select>
 
     <select id="selectByDevice" resultMap="NetworkDeviceMap">
-        select * from network_device where device_name like concat('%',#{deviceName},'%') and  room_id = #{roomId};
+        select *
+        from network_device
+        where device_name like concat('%', #{deviceName}, '%')
+          and room_id = #{roomId};
     </select>
     <select id="selectByStatusAndName" resultMap="NetworkDeviceMap">
-        select * from network_device where device_name like concat('%',#{deviceName},'%') and  status = #{status};
+        select *
+        from network_device
+        <where>
+            <!--            简单来说就是：先进行 if 判断，如果条件不成立，那么就不执行 where 中 if 的那一段 and，当所有的 if 都不满足时，就不会执行所有的 and-->
+            <!--            以下两种方式等价于!= ' '-->
+            <!--suppress XmlUnresolvedReference -->
+            <if test="!deviceName.length.equals(' ') and deviceName != null">
+                and device_name like concat('%', #{deviceName}, '%')
+            </if>
+            <!--suppress XmlUnresolvedReference -->
+            <if test="status != null and status.length()>0">
+                and status like concat('%', #{status}, '%')
+            </if>
+            <!--suppress XmlUnresolvedReference -->
+            <if test="roomId != null">
+                and room_id like concat('%', #{roomId}, '%')
+            </if>
+        </where>
     </select>
+    <select id="selectBySomeOfAll" resultMap="NetworkDeviceMap">
+        select *
+        from network_device
+        <where>
+            <!--
+            choose-when相当于Java的switch‑case，从上往下依次判断，只执行第一个条件成立的分支
+            只要某一个when条件满足，后面所有when全部不再判断；全部不匹配则不拼接任何条件
+            和多个独立if区别：if是全部条件都会判断，可以多条件同时生效；choose‑when只会命中第一条
+        -->
+            <choose>
+            <!--suppress XmlUnresolvedReference -->
+            <when test="!deviceName.length.equals(' ') and deviceName != null">
+                and device_name like concat('%', #{deviceName}, '%')
+            </when>
+            <!--suppress XmlUnresolvedReference -->
+            <when test="status != null and status.length()>0">
+                and status like concat('%', #{status}, '%')
+            </when>
+            <!--suppress XmlUnresolvedReference -->
+            <when test="roomId != null">
+                and room_id like concat('%', #{roomId}, '%')
+            </when>
+            </choose>
+        </where>
+    </select>
+    <!--补充
+    XML特殊符号转义（Mapper XML文件内不能直接写 < > & " '）
+    >     → &gt;
+    >=    → &gt;=
+    <     → &lt;
+    <=    → &lt;=
+    &     → &amp;
+    '     → &apos;
+    "     → &quot;
+    注意：写在test条件里面可以直接用 > <（可爱捏），只有SQL语句文本区域必须转义
+-->
+
+
 
 </mapper>

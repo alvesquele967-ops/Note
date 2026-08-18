@@ -21,5 +21,6 @@ public interface NetworkDeviceMapper {
     List<NetworkDevice> selectByDevice(NetworkDevice device);
 
     List<NetworkDevice> selectByStatusAndName(Map map);
+    List<NetworkDevice> selectBySomeOfAll(Map map);
 
 }

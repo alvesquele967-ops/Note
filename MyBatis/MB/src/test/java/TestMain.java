@@ -31,7 +31,7 @@ public class TestMain {
     // @After：每个@Test执行完毕后运行
     @After
     public void tearDown() {
-        if(sqlSession != null){
+        if (sqlSession != null) {
             sqlSession.close();
         }
     }
@@ -61,7 +61,7 @@ public class TestMain {
 
     @Test
     public void testSelectRoomIdAndName() {
-        List<NetworkDevice> devices = mapper.selectByRoomIdAndName("1","核心");
+        List<NetworkDevice> devices = mapper.selectByRoomIdAndName("1", "核心");
         for (NetworkDevice device : devices) {
             System.out.println(device);
         }
@@ -80,10 +80,23 @@ public class TestMain {
 
     @Test
     public void testSelectByStatusAndName() {
-        Map<String,Object> device = new HashMap<>();
-        device.put("deviceName","核心");
-        device.put("status","ONLINE");
+        Map<String, Object> device = new HashMap<>();
+//        device.put("deviceName", "核心");
+//        device.put("status", "ONLINE");
+//        device.put("roomId", 1);
         List<NetworkDevice> devices = mapper.selectByStatusAndName(device);
+        for (NetworkDevice device1 : devices) {
+            System.out.println(device1);
+        }
+    }
+
+    @Test
+    public void testSelectBySomeOfAll(){
+        Map<String, Object> device = new HashMap<>();
+        device.put("deviceName", "数据");
+        device.put("status", "ONLINE");
+        device.put("roomId", 1);
+        List<NetworkDevice> devices = mapper.selectBySomeOfAll(device);
         for (NetworkDevice device1 : devices) {
             System.out.println(device1);
         }
