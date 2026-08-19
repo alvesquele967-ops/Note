@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="chiku.liu.mapper.RoomMapper">
+<resultMap id="RoomMapperMap" type="Room">
+    <id column="id" property="id"/>
+    <result column="room_name" property="roomName"/>
+    <result column="location" property="location"/>
+    <result column="create_at" property="creatAt"/>
+</resultMap>
+    <update id="updateRoom">
+        update machine_room
+        <set>
+            <if test="roomName != null and roomName.length() > 0">
+                room_name = #{roomName},
+            </if>
+            <if test="location != null and location.length() > 0">
+                location = #{location},
+            </if>
+            <if test="creatAt != null and creatAt.length() > 0">
+                create_at = #{creatAt}
+            </if>
+        </set>
+        where id = #{id};
+    </update>
+
+</mapper>
