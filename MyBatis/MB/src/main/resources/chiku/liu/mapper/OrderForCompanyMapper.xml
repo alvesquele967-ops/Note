@@ -18,7 +18,7 @@
         </association>
     </resultMap>
 
-    <!--一对多：公司 携带多个订单，这个就是你selectAllOrder要用的-->
+    <!--一对多：公司 携带多个订单-->
     <resultMap id="companys" type="chiku.liu.entity.Company">
         <!--公司主键，别名c_id，实体属性id-->
         <id column="c_id" property="id"/>
@@ -50,7 +50,7 @@
         where c.id = o.user_id;
     </select>
 
-    <!--一对多 查询全部公司，附带旗下订单【你测试跑这个】-->
+    <!--一对多 查询全部公司-->
     <select id="selectAllOrder" resultMap="companys">
         select
             c.id AS c_id,
