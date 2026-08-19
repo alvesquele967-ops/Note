@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="chiku.liu.mapper.OrderForCompanyMapper">
+    <!--多对一：订单 关联公司-->
+    <resultMap id="orderForCompany" type="chiku.liu.entity.Order">
+        <id column="o_id" property="id"/>
+        <result column="order_time" property="orderTime"/>
+        <result column="total" property="total"/>
+        <result column="user_id" property="cid"/>
+        <association property="company" javaType="chiku.liu.entity.Company">
+            <id column="c_id" property="id"/>
+            <result column="company_name" property="companyName"/>
+            <result column="contact_person" property="contactPerson"/>
+            <result column="address" property="address"/>
+        </association>
+    </resultMap>
+
+    <!--一对多：公司 携带多个订单，这个就是你selectAllOrder要用的-->
+    <resultMap id="companys" type="chiku.liu.entity.Company">
+        <!--公司主键，别名c_id，实体属性id-->
+        <id column="c_id" property="id"/>
+        <result column="company_name" property="companyName"/>
+        <result column="contact_person" property="contactPerson"/>
+        <result column="address" property="address"/>
+
+        <collection property="orders" ofType="chiku.liu.entity.Order">
+            <!--订单主键别名o_id-->
+            <id column="o_id" property="id"/>
+            <result column="order_time" property="orderTime"/>
+            <result column="total" property="total"/>
+            <result column="user_id" property="cid"/>
+        </collection>
+    </resultMap>
+
+    <!--多对一查询 订单查所属公司-->
+    <select id="selectAll" resultMap="orderForCompany">
+        select
+            o.id AS o_id,
+            o.order_time,
+            o.total,
+            o.user_id,
+            c.id AS c_id,
+            c.company_name,
+            c.contact_person,
+            c.address
+        from tb_order o, company c
+        where c.id = o.user_id;
+    </select>
+
+    <!--一对多 查询全部公司，附带旗下订单【你测试跑这个】-->
+    <select id="selectAllOrder" resultMap="companys">
+        select
+            c.id AS c_id,
+            c.company_name,
+            c.contact_person,
+            c.address,
+            o.id AS o_id,
+            o.order_time,
+            o.total,
+            o.user_id
+        from company c
+                 left join tb_order o on c.id = o.user_id;
+    </select>
+</mapper>

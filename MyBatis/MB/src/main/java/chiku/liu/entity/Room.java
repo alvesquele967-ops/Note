@@ -9,4 +9,5 @@ public class Room {
     private String roomName;
     private String  location;
     private String creatAt;
+    private Company company;
 }
