@@ -1,0 +1,15 @@
+1.添加依赖
+2.建库建表
+3.写application.properties
+4.创建实体类
+5.创建Mapper接口
+6.创建Mapper XML
+7.创建Service接口
+8.创建Service实体类
+9.创建Controller
+
+1.UserMapper增加功能
+2.xml添加对应语句
+3.添加业务方法
+4.Impl实现方法
+5.添加接口
