@@ -5,14 +5,41 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="chiku.liu.mapper.UserMapper">
-
+<resultMap id="SelectAll" type="chiku.liu.pojo.User">
+    <id column="id" property="id"/>
+    <result column="username" property="userName"/>
+    <result column="age" property="age"/>
+    <result column="phone" property="phone"/>
+    <result column="create_time" property="createTime"/>
+</resultMap>
     <insert id="insert">
         insert into day.user(username, age, phone, create_time)
         values (#{userName},#{age},#{phone},#{createTime});
     </insert>
+    <update id="update">
+        update day.user
+        <set>
+            <if test="userName != null and userName.length()>0">
+                username = #{userName},
+            </if>
+            <if test="age != null">
+                age = #{age},
+            </if>
+            <if test="phone != null and phone.length()>0">
+                phone = #{phone},
+            </if>
+            <if test="createTime != null and createTime != ''">
+                create_time = #{createTime},
+            </if>
+        </set>
+        where id = #{id};
+    </update>
     <delete id="deleteById">
         delete
         from day.user
         where id = #{id};
     </delete>
+    <select id="selectAll" resultMap="SelectAll">
+        select * from day.user;
+    </select>
 </mapper>
