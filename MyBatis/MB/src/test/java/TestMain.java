@@ -22,7 +22,7 @@ public class TestMain {
     // @Before：每个@Test方法执行前运行
     @Before
     public void setUp() throws IOException {
-        String resource = "mybatis-config.xml";
+        String resource = "mybatis-config.md";
         InputStream inputStream = Resources.getResourceAsStream(resource);
         SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(inputStream);
 //        自动事务，默认是false

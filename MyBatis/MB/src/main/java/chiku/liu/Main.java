@@ -13,7 +13,7 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        String resource = "mybatis-config.xml";
+        String resource = "mybatis-config.md";
 
         InputStream inputStream = Resources.getResourceAsStream(resource);
 //        专门建立sqlSession的工厂。。。。最后是按照那个config.xml里的配置构建MyBatis

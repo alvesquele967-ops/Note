@@ -13,8 +13,8 @@
     <result column="create_time" property="createTime"/>
 </resultMap>
     <insert id="insert">
-        insert into day.user(username, age, phone, create_time)
-        values (#{userName},#{age},#{phone},#{createTime});
+        insert into day.user(username, age, phone)
+        values (#{userName},#{age},#{phone});
     </insert>
     <update id="update">
         update day.user
