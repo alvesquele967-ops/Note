@@ -13,3 +13,14 @@ server:
 #    username: root
 #    password: root
 #    driver-class-name: com.mysql.cj.jdbc.Driver
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/user?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+    username: root
+    password: 661960
+
+# mybatis配置
+mybatis:
+  mapper-locations: classpath:com/example/demo/mapper/*.xml  #xml mapper文件存放位置
+  type-aliases-package: com.example.demo.entity #实体类别名
