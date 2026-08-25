@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="chiku.liu.equipmentmanagement.mapper.NetworkDeviceMapper">
+
+
+    <select id="selectAll"
+            resultType="chiku.liu.equipmentmanagement.entity.NetworkDevice">
+
+        SELECT
+            id,
+            device_name,
+            ip_address,
+            status,
+            create_time
+        FROM network_device
+
+    </select>
+
+
+</mapper>

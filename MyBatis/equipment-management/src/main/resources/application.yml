@@ -1,0 +1,26 @@
+server:
+  port: 8080
+
+
+spring:
+
+  datasource:
+
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+    url: jdbc:mysql://localhost:3306/equipment_management?serverTimezone=Asia/Shanghai&characterEncoding=UTF-8
+
+    username: root
+
+    password: 661960
+
+
+mybatis:
+
+  mapper-locations: classpath:mapper/*.xml
+
+  type-aliases-package: chiku.liu.equipmentmanagement.entity
+
+  configuration:
+
+    map-underscore-to-camel-case: true
